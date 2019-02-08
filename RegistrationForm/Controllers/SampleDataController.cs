@@ -2,28 +2,38 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RegistrationForm.DAL.src.Context;
+using RegistrationForm.Infrastructure.DAL;
+using RegistrationForm.Infrastructure.DAL.Country;
 
 namespace RegistrationForm.Controllers
 {
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
+        private readonly IMediator _mediator;
 
         private static string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        public SampleDataController()
+        public SampleDataController(IMediator mediator)
         {
+            _mediator = mediator;
         }
 
         [HttpGet("[action]")]
-        public IEnumerable<WeatherForecast> WeatherForecasts()
+        public async Task<IEnumerable<WeatherForecast>> WeatherForecasts()
         {
+            var countries = await _mediator.Send(new GetCountriesListRequest());
+            var r = countries.ToArray();
+
+
+
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {

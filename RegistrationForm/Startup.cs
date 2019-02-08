@@ -1,6 +1,8 @@
+using System.Reflection;
+using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Data.Sqlite;
@@ -8,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RegistrationForm.DAL.src.Context;
+using RegistrationForm.Infrastructure.AutoMapper;
 
 namespace RegistrationForm
 {
@@ -44,7 +47,20 @@ namespace RegistrationForm
                     .UseSqlite(provider.GetService<SqliteConnection>()).Options;
                 return new RegistrationDbContext(options);
             });
+
+            services.AddSingleton(provider => new MapperConfiguration(
+                cfg => cfg.AddProfile(new ModelsProfile())).CreateMapper());
+
+            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
+
+            services.AddCors(o => o.AddPolicy("DevPolicy", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                }));
             
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

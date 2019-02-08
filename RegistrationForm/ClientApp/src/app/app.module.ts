@@ -31,8 +31,8 @@ import { RegistrationStep1Component } from './registration-step1/registration-st
       { path: 'Step1', component: RegistrationStep1Component, pathMatch: 'full' },
       { path: 'Step2', component: RegistrationStep2Component, pathMatch: 'full' },
       // { path: '', component: HomeComponent, pathMatch: 'full' },
-      // { path: 'counter', component: CounterComponent },
-      // { path: 'fetch-data', component: FetchDataComponent },
+      { path: 'counter', component: CounterComponent },
+      { path: 'fetch-data', component: FetchDataComponent },
     ])
   ],
   providers: [],

@@ -3,8 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RegistrationForm.DAL.src.Context;
 
 namespace RegistrationForm
 {
@@ -27,6 +30,21 @@ namespace RegistrationForm
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+            
+            services.AddSingleton<SqliteConnection>(provider =>
+            {
+                var connection = new SqliteConnection("DataSource=:memory:");
+                connection.Open();
+                return connection;
+            });
+
+            services.AddTransient<RegistrationDbContext>(provider =>
+            {
+                var options = new DbContextOptionsBuilder<RegistrationDbContext>()
+                    .UseSqlite(provider.GetService<SqliteConnection>()).Options;
+                return new RegistrationDbContext(options);
+            });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="src\Migrations\20190208072736_InitialMigration.cs" />
+    <Compile Remove="src\Migrations\20190208072736_InitialMigration.Designer.cs" />
+    <Compile Remove="src\Migrations\20190208073814_Migration1.cs" />
+    <Compile Remove="src\Migrations\20190208073814_Migration1.Designer.cs" />
+    <Compile Remove="src\Migrations\20190208074222_Migration2.cs" />
+    <Compile Remove="src\Migrations\20190208074222_Migration2.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="src\Migrations\" />
+  </ItemGroup>
+
+</Project>

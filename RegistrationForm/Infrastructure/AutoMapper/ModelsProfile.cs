@@ -14,6 +14,8 @@ namespace RegistrationForm.Infrastructure.AutoMapper
         {
             CreateMap<Entities.Country, Country>();
             CreateMap<Entities.Province, Province>();
+            CreateMap<AccountWithPassword, Entities.Account>();
+            CreateMap<Entities.Account, Account>();
         }
     }
 }

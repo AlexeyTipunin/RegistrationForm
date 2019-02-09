@@ -7,24 +7,21 @@ using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using RegistrationForm.DAL.src.Context;
+using RegistrationForm.Infrastructure.DAL.Country;
 
 namespace RegistrationForm.Infrastructure.DAL.Province
 {
-    public class GetProvinceListHandler : IRequestHandler<GetProvinceListRequest, IEnumerable<Models.Province>>
+    public class GetProvinceListHandler : AbsIRequestHandler<GetProvinceListRequest, IEnumerable<Models.Province>>
     {
-        private readonly RegistrationDbContext _dbContext;
-        private readonly IMapper _mapper;
-        public GetProvinceListHandler(RegistrationDbContext dbContext, IMapper mapper)
+        public GetProvinceListHandler(RegistrationDbContext dbContext, IMapper mapper): base(dbContext, mapper)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper)); ;
         }
 
-        public async Task<IEnumerable<Models.Province>> Handle(GetProvinceListRequest request, CancellationToken cancellationToken)
+        protected override async Task<IEnumerable<Models.Province>> InternalHandle(GetProvinceListRequest request, CancellationToken cancellationToken)
         {
-            var provinces = await _dbContext.Provinces.Where(x => x.CountryId == request.CountryId)
+            var provinces = await DbContext.Provinces.Where(x => x.CountryId == request.CountryId)
                 .ToArrayAsync(cancellationToken);
-            return provinces.Select(x => _mapper.Map<Models.Province>(x));
+            return provinces.Select(x => Mapper.Map<Models.Province>(x));
         }
     }
 }

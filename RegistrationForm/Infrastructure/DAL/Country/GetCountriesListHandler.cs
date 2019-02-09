@@ -10,20 +10,16 @@ using RegistrationForm.DAL.src.Context;
 
 namespace RegistrationForm.Infrastructure.DAL.Country
 {
-    public class GetCountriesListHandler: IRequestHandler<GetCountriesListRequest, IEnumerable<Models.Country>>
+    public class GetCountriesListHandler: AbsIRequestHandler<GetCountriesListRequest, IEnumerable<Models.Country>>
     {
-        private readonly RegistrationDbContext _dbContext;
-        private readonly IMapper _mapper;
-        public GetCountriesListHandler(RegistrationDbContext dbContext, IMapper mapper)
+        public GetCountriesListHandler(RegistrationDbContext dbContext, IMapper mapper): base(dbContext, mapper)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper)); ;
         }
 
-        public async Task<IEnumerable<Models.Country>> Handle(GetCountriesListRequest request, CancellationToken cancellationToken)
+        protected override async Task<IEnumerable<Models.Country>> InternalHandle(GetCountriesListRequest request, CancellationToken cancellationToken)
         {
-            var countries = await _dbContext.Countries.ToArrayAsync(cancellationToken);
-            return countries.Select(x => _mapper.Map<Models.Country>(x));
+            var countries = await DbContext.Countries.ToArrayAsync(cancellationToken);
+            return countries.Select(x => Mapper.Map<Models.Country>(x));
         }
     }
 }

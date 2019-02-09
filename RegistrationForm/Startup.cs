@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RegistrationForm.DAL.src.Context;
 using RegistrationForm.Infrastructure.AutoMapper;
+using RegistrationForm.Infrastructure.Security;
 
 namespace RegistrationForm
 {
@@ -59,8 +60,9 @@ namespace RegistrationForm
                         .AllowAnyMethod()
                         .AllowAnyHeader();
                 }));
-            
 
+            services.AddTransient<IPasswordEncrypter, PasswordEncrypter>();
+            services.AddTransient<IPasswordComplexityChecker, PasswordComplexityChecker>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

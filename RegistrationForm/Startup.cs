@@ -9,6 +9,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RegistrationForm.Controllers;
 using RegistrationForm.DAL.src.Context;
 using RegistrationForm.Infrastructure.AutoMapper;
 using RegistrationForm.Infrastructure.Security;
@@ -27,7 +28,8 @@ namespace RegistrationForm
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddApplicationPart(typeof(AccountsController).Assembly);
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -35,19 +37,7 @@ namespace RegistrationForm
                 configuration.RootPath = "ClientApp/dist";
             });
             
-            services.AddSingleton<SqliteConnection>(provider =>
-            {
-                var connection = new SqliteConnection("DataSource=:memory:");
-                connection.Open();
-                return connection;
-            });
-
-            services.AddTransient<RegistrationDbContext>(provider =>
-            {
-                var options = new DbContextOptionsBuilder<RegistrationDbContext>()
-                    .UseSqlite(provider.GetService<SqliteConnection>()).Options;
-                return new RegistrationDbContext(options);
-            });
+            ConfigureDatabase(services);
 
             services.AddSingleton(provider => new MapperConfiguration(
                 cfg => cfg.AddProfile(new ModelsProfile())).CreateMapper());
@@ -63,6 +53,23 @@ namespace RegistrationForm
 
             services.AddTransient<IPasswordEncrypter, PasswordEncrypter>();
             services.AddTransient<IPasswordComplexityChecker, PasswordComplexityChecker>();
+        }
+
+        protected virtual void ConfigureDatabase(IServiceCollection services)
+        {
+            services.AddSingleton<SqliteConnection>(provider =>
+            {
+                var connection = new SqliteConnection("DataSource=:memory:");
+                connection.Open();
+                return connection;
+            });
+
+            services.AddTransient<RegistrationDbContext>(provider =>
+            {
+                var options = new DbContextOptionsBuilder<RegistrationDbContext>()
+                    .UseSqlite(provider.GetService<SqliteConnection>()).Options;
+                return new RegistrationDbContext(options);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

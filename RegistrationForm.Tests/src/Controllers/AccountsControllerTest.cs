@@ -239,7 +239,7 @@ namespace RegistrationForm.Tests.src.Controllers
         private AccountWithPassword GetInitializedAccount() => new AccountWithPassword
         {
             AccountId = 0,
-            ProvinceId = 1,
+            ProvinceId = 2,
             Login = "login",
             AgreeToWorkForFood = true,
             Password = "a1",

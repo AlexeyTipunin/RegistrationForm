@@ -15,13 +15,11 @@ namespace RegistrationForm.Controllers
     public class AccountsController : ControllerBase
     {
         protected readonly IMediator Mediator;
-        //protected readonly IPasswordComplexityChecker ComplexityChecker;
         private readonly ILogger<AccountsController> _logger;
 
-        public AccountsController(IMediator mediator, /*IPasswordComplexityChecker complexityChecker,*/ ILogger<AccountsController> logger)
+        public AccountsController(IMediator mediator, ILogger<AccountsController> logger)
         {
             Mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-            //ComplexityChecker = complexityChecker ?? throw new ArgumentNullException(nameof(complexityChecker));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 

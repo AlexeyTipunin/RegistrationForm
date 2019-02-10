@@ -24,9 +24,9 @@ namespace RegistrationForm.Controllers
 
         // GET: api/Countries
         [HttpGet]
-        public async Task<IEnumerable<Country>> Get()
+        public async Task<ActionResult<IEnumerable<Country>>> Get()
         {
-            return await _mediator.Send(new GetCountriesListRequest());
+            return Ok(await _mediator.Send(new GetCountriesListRequest()));
         }
     }
 }

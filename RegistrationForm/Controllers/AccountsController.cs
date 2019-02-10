@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -14,19 +15,19 @@ namespace RegistrationForm.Controllers
     public class AccountsController : ControllerBase
     {
         protected readonly IMediator Mediator;
-        protected readonly IPasswordComplexityChecker ComplexityChecker;
+        //protected readonly IPasswordComplexityChecker ComplexityChecker;
         private readonly ILogger<AccountsController> _logger;
 
-        public AccountsController(IMediator mediator, IPasswordComplexityChecker complexityChecker, ILogger<AccountsController> logger)
+        public AccountsController(IMediator mediator, /*IPasswordComplexityChecker complexityChecker,*/ ILogger<AccountsController> logger)
         {
             Mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-            ComplexityChecker = complexityChecker ?? throw new ArgumentNullException(nameof(complexityChecker));
+            //ComplexityChecker = complexityChecker ?? throw new ArgumentNullException(nameof(complexityChecker));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         // GET: api/Accounts
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<ActionResult<IEnumerable<Account>>> Get()
         {
             var actions = await Mediator.Send(new GetAccountsListRequest());
             return Ok(actions);
@@ -34,37 +35,37 @@ namespace RegistrationForm.Controllers
 
         // GET: api/Accounts/5
         [HttpGet("{id}", Name = "Get")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<ActionResult<Account>> Get(int id)
         {
             var account = await Mediator.Send(new GetAccountByIdRequest(id));
-            return account == null
-                ? NotFound() as IActionResult
-                : Ok(account);
+            return account != null 
+                ? (ActionResult<Account>) Ok(account) 
+                : NotFound();
         }
 
         // GET: /api/Accounts/GetByLogin/login
         [Route("GetByLogin/{login}")]
         [HttpGet]
-        public async Task<IActionResult> GetByLogin(string login)
+        public async Task<ActionResult<Account>> GetByLogin(string login)
         {
             var account = await Mediator.Send(new GetAccountByLoginIdRequest(login));
-            return account == null
-                ? NotFound() as IActionResult
-                : Ok(account);
+            return account != null
+                ? (ActionResult<Account>) Ok(account)
+                : NotFound();
         }
 
         // POST: api/Accounts
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] AccountWithPassword account)
+        public async Task<ActionResult> Post([FromServices]IPasswordComplexityChecker passwordComplexityChecker, 
+                                             [FromBody] AccountWithPassword account)
         {
-
             if(!account.AgreeToWorkForFood)
-                return BadRequest("I should agree to work for food.");
+                return BadRequest("You should agree to work for food.");
 
             if (!string.Equals(account.Password, account.PasswordConfirmation))
-                return BadRequest("Account password confirmation does not miss mitch.");
+                return BadRequest("Account password confirmation does not miss much.");
 
-            if (!ComplexityChecker.Check(account.Password))
+            if (!passwordComplexityChecker.Check(account.Password))
                 return BadRequest("Account password is weak.");
 
             try

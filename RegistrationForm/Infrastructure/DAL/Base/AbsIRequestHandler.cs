@@ -18,11 +18,11 @@ namespace RegistrationForm.Infrastructure.DAL.Country
             Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken)
+        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                return InternalHandle(request, cancellationToken);
+                return await InternalHandle(request, cancellationToken);
             }
             catch (DALException)
             {

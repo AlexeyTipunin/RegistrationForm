@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28531.58
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistrationForm", "RegistrationForm\RegistrationForm.csproj", "{BC612D27-4E18-4AC8-9BA5-04FFD06C855D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrationForm.DAL", "RegistrationForm.DAL\RegistrationForm.DAL.csproj", "{F2F8A75F-BE71-49FA-AEE3-484115CF261D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistrationForm.DAL", "RegistrationForm.DAL\RegistrationForm.DAL.csproj", "{F2F8A75F-BE71-49FA-AEE3-484115CF261D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistrationForm.Tests", "RegistrationForm.Tests\RegistrationForm.Tests.csproj", "{5D6CBF3F-44F7-45AC-A585-BAAA3DB111BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrationForm.IntegrationTests", "RegistrationForm.IntegrationTests\RegistrationForm.IntegrationTests.csproj", "{4EAF0AFB-D2A0-4419-88D3-5F434A07DE8C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{F2F8A75F-BE71-49FA-AEE3-484115CF261D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2F8A75F-BE71-49FA-AEE3-484115CF261D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2F8A75F-BE71-49FA-AEE3-484115CF261D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D6CBF3F-44F7-45AC-A585-BAAA3DB111BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D6CBF3F-44F7-45AC-A585-BAAA3DB111BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D6CBF3F-44F7-45AC-A585-BAAA3DB111BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D6CBF3F-44F7-45AC-A585-BAAA3DB111BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EAF0AFB-D2A0-4419-88D3-5F434A07DE8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EAF0AFB-D2A0-4419-88D3-5F434A07DE8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EAF0AFB-D2A0-4419-88D3-5F434A07DE8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EAF0AFB-D2A0-4419-88D3-5F434A07DE8C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

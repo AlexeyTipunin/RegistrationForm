@@ -74,6 +74,8 @@ export class RegistrationStep2Component implements OnInit {
         }, 
         error => {
           // implement error logic
+          alert('Error: ' + error);
+          this.router.navigate(['/step1']);
         });
   }
 

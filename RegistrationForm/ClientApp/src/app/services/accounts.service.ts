@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { LoggingService } from './logging.service';
 import { Account } from '../models/account';
 import { AccountWithPassword } from '../models/accountWithPassword';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 const httpOptions = {
@@ -43,11 +43,12 @@ export class AccountsService {
       );
   }
 
-  addAccount (account: AccountWithPassword): Observable<Account> {
-    return this.http.post<Account>(this.url, account, httpOptions).pipe(
-      tap((newAccount: Account) => this.logError(`added account w/ id=${newAccount.accountId}`)),
-      catchError(this.handleError<Account>('addAccount'))
-    );
+  addAccount(account: AccountWithPassword): Observable<Account> {
+    return this.http.post<Account>(this.url, account, httpOptions)
+      .pipe(
+        tap((newAccount: Account) => this.logError(`added account w/ id=${newAccount.accountId}`)),
+        catchError(this.handleErrorWithThrow)
+      );
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
@@ -57,6 +58,22 @@ export class AccountsService {
     };
   }
 
+  handleErrorWithThrow(error) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      // client-side error
+      errorMessage = `Error: ${error.error.message}`;
+    }
+    else if(error.status === 400){
+      errorMessage = error.error;
+    } 
+    else {
+      // server-side error
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    return throwError(errorMessage);
+  }
+  
   private logError(message: string) {
     this.logger.logError(`AccountsService: ${message}`);
   }

@@ -5,7 +5,7 @@
         public int AccountId { get; set; }
         public string Login { get; set; }
         public string PasswordHash { get; set; }
-        public bool AgreeToWorkForFood { get; set; }
+        public bool Agreement { get; set; }
 
         public int ProvinceId { get; set; }
         public Province Province { get; set; }

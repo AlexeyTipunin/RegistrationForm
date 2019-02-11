@@ -10,7 +10,7 @@ namespace RegistrationForm.Infrastructure.Security
     {
         public string Encrypt(string password)
         {
-            byte[] salt = new byte[128 / 8];
+            var salt = new byte[128 / 8];
 
             return Convert.ToBase64String(KeyDerivation.Pbkdf2(
                 password: password,

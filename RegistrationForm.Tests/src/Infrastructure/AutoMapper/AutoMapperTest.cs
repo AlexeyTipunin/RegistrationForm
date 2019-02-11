@@ -59,7 +59,7 @@ namespace RegistrationForm.Tests
             {
                 AccountId = 1,
                 ProvinceId = 2,
-                AgreeToWorkForFood = true,
+                Agreement = true,
                 Login = "login",
                 PasswordHash = "password"
             };
@@ -68,7 +68,7 @@ namespace RegistrationForm.Tests
             //
             model.AccountId.Should().Be(entity.AccountId);
             model.ProvinceId.Should().Be(entity.ProvinceId);
-            model.AgreeToWorkForFood.Should().Be(entity.AgreeToWorkForFood);
+            model.Agreement.Should().Be(entity.Agreement);
             model.Login.Should().Be(entity.Login);
         }
 
@@ -79,7 +79,7 @@ namespace RegistrationForm.Tests
             {
                 AccountId = 1,
                 ProvinceId = 2,
-                AgreeToWorkForFood = true,
+                Agreement = true,
                 Login = "login",
                 Password = "password",
                 PasswordConfirmation = "passwordConfirmation"
@@ -89,7 +89,7 @@ namespace RegistrationForm.Tests
             //
             entity.AccountId.Should().Be(entity.AccountId);
             entity.ProvinceId.Should().Be(entity.ProvinceId);
-            entity.AgreeToWorkForFood.Should().Be(entity.AgreeToWorkForFood);
+            entity.Agreement.Should().Be(entity.Agreement);
             entity.Login.Should().Be(entity.Login);
         }
     }

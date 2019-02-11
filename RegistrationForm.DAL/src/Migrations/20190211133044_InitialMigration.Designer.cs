@@ -8,7 +8,7 @@ using RegistrationForm.DAL.src.Context;
 namespace RegistrationForm.DAL.Migrations
 {
     [DbContext(typeof(RegistrationDbContext))]
-    [Migration("20190208074345_InitialMigration")]
+    [Migration("20190211133044_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,7 +22,7 @@ namespace RegistrationForm.DAL.Migrations
                     b.Property<int>("AccountId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool>("AgreeToWorkForFood");
+                    b.Property<bool>("Agreement");
 
                     b.Property<string>("Login")
                         .IsRequired();
@@ -52,6 +52,23 @@ namespace RegistrationForm.DAL.Migrations
                     b.HasKey("CountryId");
 
                     b.ToTable("Countries");
+
+                    b.HasData(
+                        new
+                        {
+                            CountryId = 1,
+                            Name = "Country 1"
+                        },
+                        new
+                        {
+                            CountryId = 2,
+                            Name = "Country 2"
+                        },
+                        new
+                        {
+                            CountryId = 3,
+                            Name = "Country 3"
+                        });
                 });
 
             modelBuilder.Entity("RegistrationForm.DAL.src.Entities.Province", b =>
@@ -69,6 +86,62 @@ namespace RegistrationForm.DAL.Migrations
                     b.HasIndex("CountryId");
 
                     b.ToTable("Provinces");
+
+                    b.HasData(
+                        new
+                        {
+                            ProvinceId = 1,
+                            CountryId = 1,
+                            Name = "Province 1.1"
+                        },
+                        new
+                        {
+                            ProvinceId = 2,
+                            CountryId = 1,
+                            Name = "Province 1.2"
+                        },
+                        new
+                        {
+                            ProvinceId = 3,
+                            CountryId = 1,
+                            Name = "Province 1.3"
+                        },
+                        new
+                        {
+                            ProvinceId = 4,
+                            CountryId = 2,
+                            Name = "Province 2.1"
+                        },
+                        new
+                        {
+                            ProvinceId = 5,
+                            CountryId = 2,
+                            Name = "Province 2.2"
+                        },
+                        new
+                        {
+                            ProvinceId = 6,
+                            CountryId = 2,
+                            Name = "Province 2.3"
+                        },
+                        new
+                        {
+                            ProvinceId = 7,
+                            CountryId = 3,
+                            Name = "Province 3.1"
+                        },
+                        new
+                        {
+                            ProvinceId = 8,
+                            CountryId = 3,
+                            Name = "Province 3.2"
+                        },
+                        new
+                        {
+                            ProvinceId = 9,
+                            CountryId = 3,
+                            Name = "Province 3.3"
+                        });
                 });
 
             modelBuilder.Entity("RegistrationForm.DAL.src.Entities.Account", b =>

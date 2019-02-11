@@ -51,7 +51,7 @@ export class RegistrationStep1Component implements OnInit {
       account.login = this.login.value;
       account.password = this.password.value;
       account.passwordConfirmation = this.passwordConfirmation.value;
-      account.agreeToWorkForFood = this.agreement.value;
+      account.agreement = this.agreement.value;
 
       this.wizardService.setAccount(account)
       this.router.navigate(['/step2']);

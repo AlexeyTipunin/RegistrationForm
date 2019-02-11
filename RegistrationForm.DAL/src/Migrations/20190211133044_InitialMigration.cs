@@ -47,7 +47,7 @@ namespace RegistrationForm.DAL.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Login = table.Column<string>(nullable: false),
                     PasswordHash = table.Column<string>(nullable: false),
-                    AgreeToWorkForFood = table.Column<bool>(nullable: false),
+                    Agreement = table.Column<bool>(nullable: false),
                     ProvinceId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -61,6 +61,66 @@ namespace RegistrationForm.DAL.Migrations
                         principalColumn: "ProvinceId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Countries",
+                columns: new[] { "CountryId", "Name" },
+                values: new object[] { 1, "Country 1" });
+
+            migrationBuilder.InsertData(
+                table: "Countries",
+                columns: new[] { "CountryId", "Name" },
+                values: new object[] { 2, "Country 2" });
+
+            migrationBuilder.InsertData(
+                table: "Countries",
+                columns: new[] { "CountryId", "Name" },
+                values: new object[] { 3, "Country 3" });
+
+            migrationBuilder.InsertData(
+                table: "Provinces",
+                columns: new[] { "ProvinceId", "CountryId", "Name" },
+                values: new object[] { 1, 1, "Province 1.1" });
+
+            migrationBuilder.InsertData(
+                table: "Provinces",
+                columns: new[] { "ProvinceId", "CountryId", "Name" },
+                values: new object[] { 2, 1, "Province 1.2" });
+
+            migrationBuilder.InsertData(
+                table: "Provinces",
+                columns: new[] { "ProvinceId", "CountryId", "Name" },
+                values: new object[] { 3, 1, "Province 1.3" });
+
+            migrationBuilder.InsertData(
+                table: "Provinces",
+                columns: new[] { "ProvinceId", "CountryId", "Name" },
+                values: new object[] { 4, 2, "Province 2.1" });
+
+            migrationBuilder.InsertData(
+                table: "Provinces",
+                columns: new[] { "ProvinceId", "CountryId", "Name" },
+                values: new object[] { 5, 2, "Province 2.2" });
+
+            migrationBuilder.InsertData(
+                table: "Provinces",
+                columns: new[] { "ProvinceId", "CountryId", "Name" },
+                values: new object[] { 6, 2, "Province 2.3" });
+
+            migrationBuilder.InsertData(
+                table: "Provinces",
+                columns: new[] { "ProvinceId", "CountryId", "Name" },
+                values: new object[] { 7, 3, "Province 3.1" });
+
+            migrationBuilder.InsertData(
+                table: "Provinces",
+                columns: new[] { "ProvinceId", "CountryId", "Name" },
+                values: new object[] { 8, 3, "Province 3.2" });
+
+            migrationBuilder.InsertData(
+                table: "Provinces",
+                columns: new[] { "ProvinceId", "CountryId", "Name" },
+                values: new object[] { 9, 3, "Province 3.3" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Accounts_ProvinceId",

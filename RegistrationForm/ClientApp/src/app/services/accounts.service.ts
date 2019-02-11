@@ -73,7 +73,7 @@ export class AccountsService {
     }
     return throwError(errorMessage);
   }
-  
+
   private logError(message: string) {
     this.logger.logError(`AccountsService: ${message}`);
   }

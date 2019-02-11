@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { WizardService } from '../wizard.service';
-import { PasswordComplexityCheckerService } from '../password-complexity-checker.service';
+import { WizardService } from '../services/wizard.service';
 import { Router } from '@angular/router';
 import { AccountWithPassword } from '../models/accountWithPassword';
-import { RegistrationFormValidator } from '../misc/RegistrationFormValidator';
 import { Country } from '../models/Country';
 import { Province } from '../models/province';
+import { CountriesService } from '../services/countries.service';
+import { AccountsService } from '../services/accounts.service';
+import { ProvincesService } from '../services/provinces.service';
 
 @Component({
   selector: 'app-registration-step2',
@@ -23,42 +24,78 @@ export class RegistrationStep2Component implements OnInit {
 
   provinceList: Province[];
   selectedProvince: Province;
+  newProvince: Province;
 
 
   constructor(
     private formBuilder: FormBuilder,
     private wizardService: WizardService,
-    private passwordComplexityChecker: PasswordComplexityCheckerService,
-    private router: Router
+    private router: Router,
+    private countriesService: CountriesService,
+    private provincesService: ProvincesService,
+    private accountsService: AccountsService,
   ) { }
 
   ngOnInit() {
+    this.account = new AccountWithPassword();
+
     // let account = this.wizardService.getAccount();
     // if(!account){
     //   this.router.navigate(['/step1']);
     // }
 
     this.form = this.formBuilder.group({
-      'country': new FormControl(this.account.login, [
-        Validators.required,
-        // Validators.email
-      ]),
-      'Province': new FormControl(this.account.login, [
-        Validators.required,
-        RegistrationFormValidator.passwordComplexityChecker(this.passwordComplexityChecker)
-      ])});
+      'country': new FormControl(this.selectedCountry, [Validators.required]),
+      'provinceControl': new FormControl(this.newProvince, [Validators.required])
+    });
+
+    this.getCountries();
+ 
+    this.country.valueChanges.subscribe((country: Country) => {
+      this.getProvinces(country);
+    })
+
+    this.province.valueChanges.subscribe((province: Province) => {
+      console.log(JSON.stringify(province));
+      console.log(JSON.stringify(this.selectedProvince));
+      console.log(JSON.stringify(this.newProvince));
+      // this.selectedProvince = province;
+      // console.log(JSON.stringify(this.selectedProvince));
+      // console.log(JSON.stringify(self.selectedProvince));
+    })
   }
 
-  get login() { return this.form.get('login'); }
-  get password() { return this.form.get('password'); }
-  get passwordConfirmation() { return this.form.get('passwordConfirmation'); }
-  get agreement() { return this.form.get('agreement'); }
+  get country() { return this.form.get('country'); }
+  get province() { return this.form.get('provinceControl'); }
+
+  getCountries(): void {
+    this.countriesService.getCountries()
+      .subscribe(countries => this.countryList = countries);
+  }
+
+  getProvinces(country: Country): void {
+    this.provincesService.getProvince(country.countryId)
+      .subscribe(provinces => {
+        this.provinceList = provinces;
+        //this.selectedProvince = provinces[0];
+      });
+  }
+
+  saveAccount(account: AccountWithPassword){
+    this.accountsService.addAccount(account)
+      .subscribe(
+        () => this.router.navigate(['/accountsList']), 
+        error => {
+          alert(JSON.stringify(error));
+          this.router.navigate(['/step1']);
+        });
+  }
 
   onSubmit() {
-    if(this.form.valid)
-    {
-      //this.wizardService.setAccount(this.account)
-      this.router.navigate(['/accountsList']);
+    if (this.form.valid) {
+      this.account.provinceId = this.selectedProvince.provinceId;
+      this.saveAccount(this.account);
+      this.wizardService.cleanUp();
     }
   }
 

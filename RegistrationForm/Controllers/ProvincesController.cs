@@ -8,7 +8,7 @@ using RegistrationForm.Models;
 
 namespace RegistrationForm.Controllers
 {
-    [Route("api/Country/{countryId}/[controller]")]
+    [Route("api/Countries/{countryId}/[controller]")]
     [ApiController]
     public class ProvincesController : ControllerBase
     {

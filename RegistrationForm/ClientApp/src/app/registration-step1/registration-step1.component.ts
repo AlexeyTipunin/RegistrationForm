@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { WizardService } from '../wizard.service';
+import { WizardService } from '../services/wizard.service';
 import { AccountWithPassword } from '../models/accountWithPassword';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { PasswordComplexityCheckerService } from '../password-complexity-checker.service';
+import { PasswordComplexityCheckerService } from '../services/password-complexity-checker.service';
 import { RegistrationFormValidator } from "../misc/RegistrationFormValidator";
 import { Router } from '@angular/router';
 

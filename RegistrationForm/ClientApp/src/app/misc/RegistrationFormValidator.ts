@@ -1,5 +1,5 @@
 import { ValidatorFn, AbstractControl } from '@angular/forms';
-import { PasswordComplexityCheckerService } from '../password-complexity-checker.service';
+import { PasswordComplexityCheckerService } from '../services/password-complexity-checker.service';
 export class RegistrationFormValidator {
 
     static passwordComplexityChecker(checker: PasswordComplexityCheckerService): ValidatorFn {

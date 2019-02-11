@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AccountWithPassword } from './models/accountWithPassword';
+import { AccountWithPassword } from '../models/accountWithPassword';
 
 @Injectable({
   providedIn: 'root'
@@ -13,5 +13,9 @@ export class WizardService {
 
   getAccount(): AccountWithPassword{
     return this.account;
+  }
+
+  cleanUp():void{
+    this.account = undefined;
   }
 }

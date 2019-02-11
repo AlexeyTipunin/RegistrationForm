@@ -22,14 +22,14 @@
       <div class="form-group row">
         <label for="provinceSelect" class="col-sm-4 col-form-label text-right">Province</label>
         <div class="col-sm-8">
-          <select id="provinceSelect" class="form-control" formControlName="provinceControl" name="provinceSelect">
+          <select id="provinceSelect" class="form-control" formControlName="province" name="provinceSelect">
             <option *ngFor="let province of provinceList" [ngValue]="province">{{province.name}}</option>
           </select>
-          <!-- <div *ngIf="province.invalid && stepOneForm.submitted" class="alert alert-danger alter-ego-errors">
+          <div *ngIf="province.invalid && stepOneForm.submitted" class="alert alert-danger alter-ego-errors">
             <div *ngIf="province.errors?.required">
               Province is required.
             </div>
-          </div> -->
+          </div>
         </div>
       </div>
 

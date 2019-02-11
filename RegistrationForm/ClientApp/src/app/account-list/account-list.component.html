@@ -1,3 +1,5 @@
-<p>
-  account-list works!
-</p>
+
+<h3>Accounts:</h3>
+<ul *ngFor="let account of accountList">
+  <li>{{account.login}}</li>
+</ul>

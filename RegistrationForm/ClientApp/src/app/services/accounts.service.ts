@@ -22,7 +22,7 @@ export class AccountsService {
     private logger: LoggingService
   ) { }
 
-  getAccount(): Observable<Account[]> {
+  getAccounts(): Observable<Account[]> {
     return this.http.get<Account[]>(this.url)
       .pipe(
         tap(_ => this.logError('fetched accounts')),
@@ -30,7 +30,7 @@ export class AccountsService {
       );
   }
 
-  getAccountNo404<Data>(login: string): Observable<Account> {
+  getAccountNo404<Account>(login: string): Observable<Account> {
     const url = `${this.url}/GetByLogin/${login}`;
     return this.http.get<Account[]>(url)
       .pipe(

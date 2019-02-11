@@ -18,14 +18,8 @@ export class RegistrationStep2Component implements OnInit {
 
   account: AccountWithPassword;
   form: FormGroup;
-
   countryList: Country[];
-  selectedCountry: Country;
-
   provinceList: Province[];
-  selectedProvince: Province;
-  newProvince: Province;
-
 
   constructor(
     private formBuilder: FormBuilder,
@@ -37,16 +31,15 @@ export class RegistrationStep2Component implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.account = new AccountWithPassword();
-
-    // let account = this.wizardService.getAccount();
-    // if(!account){
-    //   this.router.navigate(['/step1']);
-    // }
+    let account = this.wizardService.getAccount();
+    if(!account){
+      this.router.navigate(['/step1']);
+    }
+    this.account = account;
 
     this.form = this.formBuilder.group({
-      'country': new FormControl(this.selectedCountry, [Validators.required]),
-      'provinceControl': new FormControl(this.newProvince, [Validators.required])
+      'country': new FormControl(null, [Validators.required]),
+      'province': new FormControl(null, [Validators.required]),
     });
 
     this.getCountries();
@@ -55,18 +48,10 @@ export class RegistrationStep2Component implements OnInit {
       this.getProvinces(country);
     })
 
-    this.province.valueChanges.subscribe((province: Province) => {
-      console.log(JSON.stringify(province));
-      console.log(JSON.stringify(this.selectedProvince));
-      console.log(JSON.stringify(this.newProvince));
-      // this.selectedProvince = province;
-      // console.log(JSON.stringify(this.selectedProvince));
-      // console.log(JSON.stringify(self.selectedProvince));
-    })
   }
 
   get country() { return this.form.get('country'); }
-  get province() { return this.form.get('provinceControl'); }
+  get province() { return this.form.get('province'); }
 
   getCountries(): void {
     this.countriesService.getCountries()
@@ -77,25 +62,25 @@ export class RegistrationStep2Component implements OnInit {
     this.provincesService.getProvince(country.countryId)
       .subscribe(provinces => {
         this.provinceList = provinces;
-        //this.selectedProvince = provinces[0];
       });
   }
 
   saveAccount(account: AccountWithPassword){
     this.accountsService.addAccount(account)
       .subscribe(
-        () => this.router.navigate(['/accountsList']), 
+        () => {
+          this.router.navigate(['/accountsList']);
+          this.wizardService.cleanUp();
+        }, 
         error => {
-          alert(JSON.stringify(error));
-          this.router.navigate(['/step1']);
+          // implement error logic
         });
   }
 
   onSubmit() {
     if (this.form.valid) {
-      this.account.provinceId = this.selectedProvince.provinceId;
+      this.account.provinceId = this.province.value.provinceId;
       this.saveAccount(this.account);
-      this.wizardService.cleanUp();
     }
   }
 

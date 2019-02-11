@@ -29,17 +29,11 @@ import { AccountListComponent } from './account-list/account-list.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    //ValidatorFn,
-    //AbstractControl,
-    // FormGroup,
-    // FormBuilder,
-    //Validators,
     RouterModule.forRoot([
       { path: '', redirectTo: '/step1', pathMatch: 'full' },
       { path: 'step1', component: RegistrationStep1Component, pathMatch: 'full' },
       { path: 'step2', component: RegistrationStep2Component, pathMatch: 'full' },
       { path: 'accountsList', component: AccountListComponent, pathMatch: 'full' },
-      // { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
     ])

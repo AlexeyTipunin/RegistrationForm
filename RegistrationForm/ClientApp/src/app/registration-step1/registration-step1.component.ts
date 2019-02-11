@@ -12,8 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./registration-step1.component.css']
 })
 export class RegistrationStep1Component implements OnInit {
-
-  account: AccountWithPassword;
+  
   form: FormGroup;
 
   constructor(
@@ -24,18 +23,17 @@ export class RegistrationStep1Component implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.account = new AccountWithPassword();
     this.form = this.formBuilder.group({
-      'login': new FormControl(this.account.login, [
+      'login': new FormControl('', [
         Validators.required,
         Validators.email
       ]),
-      'password': new FormControl(this.account.login, [
+      'password': new FormControl('', [
         Validators.required,
         RegistrationFormValidator.passwordComplexityChecker(this.passwordComplexityChecker)
       ]),
-      'passwordConfirmation': new FormControl(this.account.login, [ Validators.required ]),
-      'agreement': new FormControl(this.account.login, [Validators.required])
+      'passwordConfirmation': new FormControl('', [ Validators.required ]),
+      'agreement': new FormControl(false, [Validators.required])
     }, {
       validator: RegistrationFormValidator.MatchPassword
     });
@@ -49,7 +47,13 @@ export class RegistrationStep1Component implements OnInit {
   onSubmit() {
     if(this.form.valid)
     {
-      this.wizardService.setAccount(this.account)
+      let account  = new AccountWithPassword();
+      account.login = this.login.value;
+      account.password = this.password.value;
+      account.passwordConfirmation = this.passwordConfirmation.value;
+      account.agreeToWorkForFood = this.agreement.value;
+
+      this.wizardService.setAccount(account)
       this.router.navigate(['/step2']);
     }
   }

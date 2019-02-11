@@ -20,7 +20,7 @@ namespace RegistrationForm.DAL.Migrations
                     b.Property<int>("AccountId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool>("AgreeToWorkForFood");
+                    b.Property<bool>("Agreement");
 
                     b.Property<string>("Login")
                         .IsRequired();

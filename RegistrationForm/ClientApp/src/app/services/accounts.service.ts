@@ -63,9 +63,6 @@ export class AccountsService {
     if (error.error instanceof ErrorEvent) {
       // client-side error
       errorMessage = `Error: ${error.error.message}`;
-    }
-    else if(error.status === 400){
-      errorMessage = error.error;
     } 
     else {
       // server-side error
@@ -73,7 +70,7 @@ export class AccountsService {
     }
     return throwError(errorMessage);
   }
-  
+
   private logError(message: string) {
     this.logger.logError(`AccountsService: ${message}`);
   }

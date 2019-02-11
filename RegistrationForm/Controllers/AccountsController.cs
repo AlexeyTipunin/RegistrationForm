@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -54,18 +55,8 @@ namespace RegistrationForm.Controllers
 
         // POST: api/Accounts
         [HttpPost]
-        public async Task<ActionResult> Post([FromServices]IPasswordComplexityChecker passwordComplexityChecker, 
-                                             [FromBody] AccountWithPassword account)
+        public async Task<ActionResult> Post([FromBody] AccountWithPassword account)
         {
-            if(!account.AgreeToWorkForFood)
-                return BadRequest("You should agree to work for food.");
-
-            if (!string.Equals(account.Password, account.PasswordConfirmation))
-                return BadRequest("Account password confirmation does not miss much.");
-
-            if (!passwordComplexityChecker.Check(account.Password))
-                return BadRequest("Account password is weak.");
-
             try
             {
                 var createdAccount = await Mediator.Send(new CreateAccountRequest(account));

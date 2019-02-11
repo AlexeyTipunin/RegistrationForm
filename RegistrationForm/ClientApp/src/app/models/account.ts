@@ -1,6 +1,6 @@
 export class Account {
     accountId: number;
     login: string;
-    agreeToWorkForFood: boolean;
+    agreement: boolean;
     provinceId: number;
 }

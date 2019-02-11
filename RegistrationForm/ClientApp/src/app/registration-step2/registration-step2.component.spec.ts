@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RegistrationStep2Component } from './registration-step2.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 describe('RegistrationStep2Component', () => {
   let component: RegistrationStep2Component;
@@ -8,7 +11,8 @@ describe('RegistrationStep2Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RegistrationStep2Component ]
+      declarations: [ RegistrationStep2Component ],
+      imports: [FormsModule, ReactiveFormsModule, HttpClientModule, Router]
     })
     .compileComponents();
   }));

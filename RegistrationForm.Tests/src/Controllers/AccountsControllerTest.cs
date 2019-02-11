@@ -128,49 +128,49 @@ namespace RegistrationForm.Tests.src.Controllers
             resultValue.Should().Be(account);
         }
 
-        [Fact]
-        private async Task Post_NoAgreement()
-        {
-            var account = GetInitializedAccount();
-            account.AgreeToWorkForFood = false;
-            var mediatorMoq = new Mock<IMediator>();
-            var controller = ControllerFactory(mediatorMoq.Object);
-            //
-            var result = await controller.Post(GetPasswordComplexityChecker(), account);
-            //
-            mediatorMoq.VerifyNoOtherCalls();
-            var badResult = result.Should().BeOfType<BadRequestObjectResult>().Subject;
-            badResult.Value.Should().Be("You should agree to work for food.");
-        }
+        //[Fact]
+        //private async Task Post_NoAgreement()
+        //{
+        //    var account = GetInitializedAccount();
+        //    account.Agreement = false;
+        //    var mediatorMoq = new Mock<IMediator>();
+        //    var controller = ControllerFactory(mediatorMoq.Object);
+        //    //
+        //    var result = await controller.Post(GetPasswordComplexityChecker(), account);
+        //    //
+        //    mediatorMoq.VerifyNoOtherCalls();
+        //    var badResult = result.Should().BeOfType<BadRequestObjectResult>().Subject;
+        //    badResult.Value.Should().Be("You should agree to work for food.");
+        //}
 
-        [Fact]
-        private async Task Post_PasswordConfirmationDoesNotMissMuch()
-        {
-            var account = GetInitializedAccount();
-            account.PasswordConfirmation = "notMisMuch";
-            var mediatorMoq = new Mock<IMediator>();
-            var controller = ControllerFactory(mediatorMoq.Object);
-            //
-            var result = await controller.Post(GetPasswordComplexityChecker(), account);
-            //
-            mediatorMoq.VerifyNoOtherCalls();
-            var badResult = result.Should().BeOfType<BadRequestObjectResult>().Subject;
-            badResult.Value.Should().Be("Account password confirmation does not miss much.");
-        }
+        //[Fact]
+        //private async Task Post_PasswordConfirmationDoesNotMissMuch()
+        //{
+        //    var account = GetInitializedAccount();
+        //    account.PasswordConfirmation = "notMisMuch";
+        //    var mediatorMoq = new Mock<IMediator>();
+        //    var controller = ControllerFactory(mediatorMoq.Object);
+        //    //
+        //    var result = await controller.Post(GetPasswordComplexityChecker(), account);
+        //    //
+        //    mediatorMoq.VerifyNoOtherCalls();
+        //    var badResult = result.Should().BeOfType<BadRequestObjectResult>().Subject;
+        //    badResult.Value.Should().Be("Account password confirmation does not miss much.");
+        //}
 
-        [Fact]
-        private async Task Post_PasswordBadComplexity()
-        {
-            var account = GetInitializedAccount();
-            var mediatorMoq = new Mock<IMediator>();
-            var controller = ControllerFactory(mediatorMoq.Object);
-            //
-            var result = await controller.Post(GetPasswordComplexityChecker(false), account);
-            //
-            mediatorMoq.VerifyNoOtherCalls();
-            var badResult = result.Should().BeOfType<BadRequestObjectResult>().Subject;
-            badResult.Value.Should().Be($"Account password is weak.");
-        }
+        //[Fact]
+        //private async Task Post_PasswordBadComplexity()
+        //{
+        //    var account = GetInitializedAccount();
+        //    var mediatorMoq = new Mock<IMediator>();
+        //    var controller = ControllerFactory(mediatorMoq.Object);
+        //    //
+        //    var result = await controller.Post(GetPasswordComplexityChecker(false), account);
+        //    //
+        //    mediatorMoq.VerifyNoOtherCalls();
+        //    var badResult = result.Should().BeOfType<BadRequestObjectResult>().Subject;
+        //    badResult.Value.Should().Be($"Password must contains min 1 digit and min 1 letter.");
+        //}
 
 
         [Fact]
@@ -182,7 +182,7 @@ namespace RegistrationForm.Tests.src.Controllers
                 .Throws(new DuplicatedLoginDALException($"Account with login {account.Login} already exist."));
             var controller = ControllerFactory(mediatorMoq.Object);
             //
-            var result = await controller.Post(GetPasswordComplexityChecker(), account);
+            var result = await controller.Post(account);
             //
             mediatorMoq.Verify(x => x.Send(It.Is<CreateAccountRequest>(i => i.Account == account), It.IsAny<CancellationToken>()), Times.Once);
             mediatorMoq.VerifyNoOtherCalls();
@@ -199,7 +199,7 @@ namespace RegistrationForm.Tests.src.Controllers
                 .Throws(new DALException("Some message"));
             var controller = ControllerFactory(mediatorMoq.Object);
             //
-            var result = await controller.Post(GetPasswordComplexityChecker(), account);
+            var result = await controller.Post(account);
             //
             mediatorMoq.Verify(x => x.Send(It.Is<CreateAccountRequest>(i => i.Account == account), It.IsAny<CancellationToken>()), Times.Once);
             mediatorMoq.VerifyNoOtherCalls();
@@ -215,7 +215,7 @@ namespace RegistrationForm.Tests.src.Controllers
             {
                 AccountId = 1,
                 Login = account.Login,
-                AgreeToWorkForFood = account.AgreeToWorkForFood,
+                Agreement = account.Agreement,
                 ProvinceId = account.ProvinceId
             };
             var mediatorMoq = new Mock<IMediator>();
@@ -223,7 +223,7 @@ namespace RegistrationForm.Tests.src.Controllers
                 .ReturnsAsync(createdAccount);
             var controller = ControllerFactory(mediatorMoq.Object);
             //
-            var result = await controller.Post(GetPasswordComplexityChecker(), account);
+            var result = await controller.Post(account);
             //
             mediatorMoq.Verify(x => x.Send(It.Is<CreateAccountRequest>(i => i.Account == account), It.IsAny<CancellationToken>()), Times.Once);
             mediatorMoq.VerifyNoOtherCalls();
@@ -241,7 +241,7 @@ namespace RegistrationForm.Tests.src.Controllers
             AccountId = 0,
             ProvinceId = 2,
             Login = "login",
-            AgreeToWorkForFood = true,
+            Agreement = true,
             Password = "a1",
             PasswordConfirmation = "a1"
         };

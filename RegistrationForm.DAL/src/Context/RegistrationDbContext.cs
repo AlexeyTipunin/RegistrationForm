@@ -41,7 +41,7 @@ namespace RegistrationForm.DAL.src.Context
                 entity.Property(x => x.Login).IsRequired();
                 entity.HasAlternateKey(x => x.Login);
                 entity.Property(x => x.PasswordHash).IsRequired();
-                entity.Property(x => x.AgreeToWorkForFood).IsRequired();
+                entity.Property(x => x.Agreement).IsRequired();
 
                 entity.HasIndex(x => x.ProvinceId);
                 entity.HasOne(x => x.Province)

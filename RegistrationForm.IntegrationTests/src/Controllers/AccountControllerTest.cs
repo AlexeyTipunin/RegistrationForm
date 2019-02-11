@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RegistrationForm.IntegrationTests.src.Misc;
 using RegistrationForm.Models;
 using Xunit;
@@ -35,7 +36,7 @@ namespace RegistrationForm.IntegrationTests.src.Controllers
                 addedAccount.Should().NotBeNull();
                 addedAccount.AccountId.Should().NotBe(0);
                 addedAccount.Login.Should().Be(account.Login);
-                addedAccount.AgreeToWorkForFood.Should().Be(account.AgreeToWorkForFood);
+                addedAccount.Agreement.Should().Be(account.Agreement);
                 addedAccount.ProvinceId.Should().Be(account.ProvinceId);
                 postResponse.Headers.Location.AbsolutePath.Should().EndWith($"/{addedAccount.AccountId}");
                 //
@@ -50,14 +51,15 @@ namespace RegistrationForm.IntegrationTests.src.Controllers
             using (var server = new TestServerFixture())
             {
                 var account = GetInitializedAccount();
-                account.AgreeToWorkForFood = false;
+                account.Agreement = false;
                 //
                 var postResponse = await server.Client.PostAsync(Url,
                     new StringContent(account.Serialize(), Encoding.UTF8, "application/json"));
                 var postResponseString = await postResponse.Content.ReadAsStringAsync();
+                var error = JObject.Parse(postResponseString);
                 //
                 postResponse.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
-                postResponseString.Should().Be("You should agree to work for food.");
+                error["errors"]["Agreement"][0].Value<string>().Should().Be("You should agree to work for food.");
             }
         }
 
@@ -72,9 +74,28 @@ namespace RegistrationForm.IntegrationTests.src.Controllers
                 var postResponse = await server.Client.PostAsync(Url,
                     new StringContent(account.Serialize(), Encoding.UTF8, "application/json"));
                 var postResponseString = await postResponse.Content.ReadAsStringAsync();
+                var error = JObject.Parse(postResponseString);
                 //
                 postResponse.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
-                postResponseString.Should().Be("Account password confirmation does not miss much.");
+                error["errors"]["PasswordConfirmation"][0].Value<string>().Should().Be("Password confirmation must be the same with password.");
+            }
+        }
+
+        [Fact]
+        private async Task Post_PasswordRequired()
+        {
+            using (var server = new TestServerFixture())
+            {
+                var account = GetInitializedAccount();
+                account.Password = null;
+                //
+                var postResponse = await server.Client.PostAsync(Url,
+                    new StringContent(account.Serialize(), Encoding.UTF8, "application/json"));
+                var postResponseString = await postResponse.Content.ReadAsStringAsync();
+                var error = JObject.Parse(postResponseString);
+                //
+                postResponse.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+                error["errors"]["Password"][0].Value<string>().Should().Be("Password is required.");
             }
         }
 
@@ -90,9 +111,10 @@ namespace RegistrationForm.IntegrationTests.src.Controllers
                 var postResponse = await server.Client.PostAsync(Url,
                     new StringContent(account.Serialize(), Encoding.UTF8, "application/json"));
                 var postResponseString = await postResponse.Content.ReadAsStringAsync();
+                var error = JObject.Parse(postResponseString);
                 //
                 postResponse.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
-                postResponseString.Should().Be("Account password is weak.");
+                error["errors"]["Password"][0].Value<string>().Should().Be("Password must contains min 1 digit and min 1 letter.");
             }
         }
 
@@ -144,7 +166,7 @@ namespace RegistrationForm.IntegrationTests.src.Controllers
             AccountId = 0,
             ProvinceId = 2,
             Login = "login",
-            AgreeToWorkForFood = true,
+            Agreement = true,
             Password = "a1",
             PasswordConfirmation = "a1"
         };
